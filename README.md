@@ -2,6 +2,7 @@
 
 A command-line C application that hides (steganographs) a secret text file inside a `.bmp` image using **LSB (Least Significant Bit)** steganography, and can later extract it back out.
 
+<img width="611" height="327" alt="image" src="https://github.com/user-attachments/assets/c2315df2-61e1-4283-a17e-63915dbd214a" />
 
 ## Abstract
 
