@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "encode.h"
 #include "types.h"
+#include <string.h>
 
 /* Function Definitions */
 
@@ -72,4 +73,20 @@ Status open_files(EncodeInfo *encInfo)
 
     // No failure return e_success
     return e_success;
+}
+
+Status read_and_validate_encode_args(char *argv[], EncodeInfo *encInfo) {
+	if(strcmp(strchr(argv[2],'.'),".bmp")==0) {
+       encInfo->src_image_fname = argv[2];
+	}
+	else {
+		return e_failure;
+	}
+	if(strcmp(strchr(argv[3],'.'),".txt")==0) {
+		encInfo->secret_fname = argv[2];
+	}
+	else {
+		return e_failure;
+	}
+
 }
