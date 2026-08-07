@@ -2,30 +2,25 @@
 #include "encode.h"
 #include "types.h"
 
-int main()
+int main(int argc, char **argv)
 {
-    EncodeInfo encInfo;
-    uint img_size;
-
-    // Fill with sample filenames
-    encInfo.src_image_fname = "beautiful.bmp";
-    encInfo.secret_fname = "secret.txt";
-    encInfo.stego_image_fname = "stego_img.bmp";
-
-    // Test open_files
-    if (open_files(&encInfo) == e_failure)
-    {
-    	printf("ERROR: %s function failed\n", "open_files" );
-    	return 1;
+//validate if you have passed atleast 3 CLA
+    if (argc<3) {
+        printf("not enough arguments\n");
     }
-    else
-    {
-    	printf("SUCCESS: %s function completed\n", "open_files" );
+ if(check_operation_type(argv)==e_encode) {
+     printf("User selected encode operation\n");
+ }
+    else if (check_operation_type(argv)==e_decode) {
+        printf("User selected decode operation\n");
     }
-
-    // Test get_image_size_for_bmp
-    img_size = get_image_size_for_bmp(encInfo.fptr_src_image);
-    printf("INFO: Image size = %u\n", img_size);
-
+    else {
+        printf("Invalid operation\n Please pass\n");
+        printf("For encoading:./a.out -e beautyful.bmp secret.txt [stego.bmp]");
+        printf("For decoding:./a.out  -d stego.bmp  [output.txt]");
+    }
     return 0;
+}
+OperationType  check_operation_type(char *argv[]) {
+
 }
