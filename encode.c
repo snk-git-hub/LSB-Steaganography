@@ -88,5 +88,11 @@ Status read_and_validate_encode_args(char *argv[], EncodeInfo *encInfo) {
 	else {
 		return e_failure;
 	}
-
+	if (argv[4]==NULL) {
+		encInfo->src_image_fname = "stego.bmp";
+	}
+	else {
+		encInfo->src_image_fname = argv[4];
+	}
+   return e_success;
 }
