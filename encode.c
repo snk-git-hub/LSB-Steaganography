@@ -97,7 +97,7 @@ Status read_and_validate_encode_args(char *argv[], EncodeInfo *encInfo) {
    return e_success;
 }
 
-Status do_encode(EncodeInfo *encInfo) {
+Status do_encoding(EncodeInfo *encInfo) {
 	if (open_files(encInfo) == e_success) {
 		printf("Opened all required files in required mode.\n");
 	}
@@ -111,11 +111,23 @@ Status do_encode(EncodeInfo *encInfo) {
 	else {
 		return e_failure;
 	}
+	if (copy_bmp_header(encInfo->fptr_src_image,encInfo->fptr_stego_image) == e_success) {
+     printf("copy bmp header as it is from %s,  %s\n", encInfo->src_image_fname, encInfo->stego_image_fname);
+	}
+	else {
+		printf("failed copy bmp header as it is from %s , %s \n", encInfo->src_image_fname, encInfo->src_image_fname);
+        return e_failure;
+	}
 return e_success;
 }
 uint get_file_size(FILE *fptr) {
+	long size;
 	fseek(fptr,0,SEEK_END);
-	return ftell(fptr);
+	size= ftell(fptr);
+	if (size<0) {
+		return 0;
+	}
+	return (uint)size;
 }
 Status check_capacity(EncodeInfo *encInfo) {
 encInfo->image_capacity=get_image_size_for_bmp(encInfo->fptr_src_image);
@@ -126,4 +138,12 @@ encInfo->size_secret_file=get_file_size(encInfo->fptr_secret);
 	else {
 		return e_failure;
 	}
+}
+
+Status copy_bmp_header(FILE *fptr_src_image, FILE *fptr_dest_image){
+	char str[54];
+	fseek(fptr_src_image,0,SEEK_SET);
+	fread(str,sizeof(char),54,fptr_dest_image);
+	fwrite(str,sizeof(char),54,fptr_dest_image);
+	return  e_success;
 }
