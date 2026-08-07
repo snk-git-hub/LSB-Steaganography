@@ -16,7 +16,17 @@ int main(int argc, char **argv)
      EncodeInfo stegnography;
      if (read_and_validate_encode_args(argv, &stegnography)==e_success) {
          printf("Encode operation completed successfully\n");
+         printf("<----------------Started encoding ------------------------->");
+         if (do_encoding(&stegnography)==e_success) {
+             printf("Encode operation completed successfully\n");
+         }
+         else {
+             printf("Encode operation failed\n");
+             return -1;
+         }
      }
+
+
      else {
          printf("Encode operation failed\n");
          return -1;

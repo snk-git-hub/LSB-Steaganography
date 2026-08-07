@@ -96,3 +96,34 @@ Status read_and_validate_encode_args(char *argv[], EncodeInfo *encInfo) {
 	}
    return e_success;
 }
+
+Status do_encode(EncodeInfo *encInfo) {
+	if (open_files(encInfo) == e_success) {
+		printf("Opened all required files in required mode.\n");
+	}
+	else {
+		printf("Error opening file \n");
+		return e_failure;
+	}
+	if (check_capacity(encInfo)==e_success) {
+		printf("The file %s is suitable for encoding\n", encInfo->src_image_fname);
+	}
+	else {
+		return e_failure;
+	}
+return e_success;
+}
+uint get_file_size(FILE *fptr) {
+	fseek(fptr,0,SEEK_END);
+	return ftell(fptr);
+}
+Status check_capacity(EncodeInfo *encInfo) {
+encInfo->image_capacity=get_image_size_for_bmp(encInfo->fptr_src_image);
+encInfo->size_secret_file=get_file_size(encInfo->fptr_secret);
+	if (encInfo->image_capacity>(2+4+4+4+encInfo->size_secret_file)*8) {
+		return e_success;
+	}
+	else {
+		return e_failure;
+	}
+}
